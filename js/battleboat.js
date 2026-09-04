@@ -175,6 +175,7 @@ function Game(size) {
 	this.shotsTaken = 0;
 	this.createGrid();
 	this.init();
+	amplitude.getInstance().logEvent('Initialize Game');
 }
 Game.size = 10; // Default grid size is 10x10
 Game.gameOver = false;
@@ -195,7 +196,6 @@ Game.prototype.checkIfWon = function() {
 		Game.stats.updateStatsSidebar();
 		this.showRestartSidebar();
 	}
-	amplitude.getInstance().logEvent('Initialize Game');
 };
 // Shoots at the target player on the grid.
 // Returns {int} Constants.TYPE: What the shot uncovered
