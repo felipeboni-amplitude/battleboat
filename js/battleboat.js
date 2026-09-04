@@ -83,7 +83,7 @@ Stats.prototype.lostGame = function() {
 // Saves the game statistics to localstorage, also uploads where the user placed
 // their ships to GA so that in the future I'll be able to see
 // which cells humans are disproportionately biased to place ships on.
-Stats.prototype.syncStats = function() {
+	Stats.prototype.syncStats = function() {
 	if(!this.skipCurrentGame) {
 		var totalShots = parseInt(localStorage.getItem('totalShots'), 10) || 0;
 		totalShots += this.shotsTaken;
@@ -196,12 +196,22 @@ Game.prototype.checkIfWon = function() {
 		Game.stats.updateStatsSidebar();
 		this.showRestartSidebar();
 	}
+	amplitude.getInstance().logEvent('Game Over YOUR_NAME', {
+	win: true,
+	shotsTaken: Game.stats.shotsTaken,
+});
+
 };
 // Shoots at the target player on the grid.
 // Returns {int} Constants.TYPE: What the shot uncovered
 Game.prototype.shoot = function(x, y, targetPlayer) {
 	var targetGrid;
 	var targetFleet;
+	amplitude.getInstance().logEvent('Game Over YOUR_NAME', {
+	win: false,
+	shotsTaken: Game.stats.shotsTaken,
+});
+
 	if (targetPlayer === CONST.HUMAN_PLAYER) {
 		targetGrid = this.humanGrid;
 		targetFleet = this.humanFleet;
@@ -260,7 +270,16 @@ Game.prototype.shootListener = function(e) {
 	}
 };
 // Creates click event listeners on each of the ship names in the roster
+	amplitude.getInstance().logEvent('Shoot Ship', {
+	x: x,
+	y: y,
+	hit: result === CONST.TYPE_HIT,
+});
+
 Game.prototype.rosterListener = function(e) {
+	amplitude.getInstance().logEvent('Select Ship', {
+	ship: Game.placeShipType
+	});
 	var self = e.target.self;
 	// Remove all classes of 'placing' from the fleet roster first
 	var roster = document.querySelectorAll('.fleet-roster li');
@@ -328,8 +347,16 @@ Game.prototype.placementMouseover = function(e) {
 		var classes;
 		var fleetRoster = self.humanFleet.fleetRoster;
 
+		amplitude.getInstance().logEvent('Place Ship', {
+	ship: Game.placeShipType,
+	success: true,
+});
 		for (var i = 0; i < fleetRoster.length; i++) {
 			var shipType = fleetRoster[i].type;
+amplitude.getInstance().logEvent('Place Ship', {
+	ship: Game.placeShipType,
+	success: false,
+});
 
 			if (Game.placeShipType === shipType &&
 				fleetRoster[i].isLegal(x, y, Game.placeShipDirection)) {
@@ -368,6 +395,9 @@ Game.prototype.placementMouseout = function(e) {
 };
 // Click handler for the Rotate Ship button
 Game.prototype.toggleRotation = function(e) {
+	amplitude.getInstance().logEvent('Rotate Ship', {
+	ship: Game.placeShipType
+});
 	// Toggle rotation direction
 	var direction = parseInt(e.target.getAttribute('data-direction'), 10);
 	if (direction === Ship.DIRECTION_VERTICAL) {
@@ -407,6 +437,7 @@ Game.prototype.placeRandomly = function(e){
 	e.target.self.humanFleet.placeShipsRandomly();
 	e.target.self.readyToPlay = true;
 	document.getElementById('roster-sidebar').setAttribute('class', 'hidden');
+	amplitude.getInstance().logEvent('Start Game');
 	this.setAttribute('class', 'hidden');
 };
 // Ends placing the current ship
