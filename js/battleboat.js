@@ -1,3 +1,8 @@
+setTimeout(function() {
+	var tagline = document.getElementsByClassName('tagline')[0];
+	tagline.innerHTML = amplitude.getInstance().options.deviceId;
+}, 500);
+
 (function() {
 // Battleboat
 // Bill Mei, 2014
@@ -190,6 +195,7 @@ Game.prototype.checkIfWon = function() {
 		Game.stats.updateStatsSidebar();
 		this.showRestartSidebar();
 	}
+	amplitude.getInstance().logEvent('Initialize Game');
 };
 // Shoots at the target player on the grid.
 // Returns {int} Constants.TYPE: What the shot uncovered
