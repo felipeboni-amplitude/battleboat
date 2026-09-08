@@ -1,12 +1,13 @@
+
 await amplitude.init("6707bf893e634019c43630ade4f466f1").promise;
 amplitude.add(engagementPlugin());
 
 import { initAll } from "@amplitude/unified";
 
 initAll("6707bf893e634019c43630ade4f466f1", {
-  // Other Amplitude SDK options...
+  // ... other options
   engagement: {
-    // Guides and Surveys options go here...
+    skip: true,
   },
 });
 
