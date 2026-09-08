@@ -18,6 +18,22 @@
   window.amplitude.add(window.sessionReplay.plugin({ sampleRate: 1 }));
 </script>
 
+<!-- Amplitude: Analytics + Session Replay + Guides and Surveys -->
+<script src="https://cdn.amplitude.com/script/6707bf893e634019c43630ade4f466f1.js"></script>
+<!-- Guides and Surveys ships in a separate bundle; it must load after the analytics script. -->
+<script src="https://cdn.amplitude.com/script/6707bf893e634019c43630ade4f466f1.engagement.js"></script>
+<script>
+// Both plugins must be added BEFORE init(), otherwise they end up with a different
+// device ID than the analytics SDK — no replay is sent, and Guides and Surveys
+// boots without a user, so Amplitude can't detect the SDK on the page.
+window.amplitude.add(window.engagement.plugin());
+window.amplitude.add(window.sessionReplay.plugin({sampleRate: 1}));
+window.amplitude.init('6707bf893e634019c43630ade4f466f1', {
+	autocapture: true
+});
+window.amplitude.track('Viewed Home Page');
+</script>
+
 <!doctype html>
 <html lang="en">
 <head>
