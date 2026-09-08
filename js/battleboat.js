@@ -1,3 +1,16 @@
+await amplitude.init("API_KEY").promise;
+amplitude.add(engagementPlugin());
+
+import { initAll } from "@amplitude/unified";
+
+initAll("YOUR_API_KEY", {
+  // Other Amplitude SDK options...
+  engagement: {
+    // Guides and Surveys options go here...
+  },
+});
+
+
 setTimeout(function() {
 	var tagline = document.getElementsByClassName('tagline')[0];
 	tagline.innerHTML = amplitude.getInstance().options.deviceId;
