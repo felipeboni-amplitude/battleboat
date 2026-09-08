@@ -7,10 +7,16 @@
   window.amplitude.init(6707bf893e634019c43630ade4f466f1);
 </script>
 <script src="https://cdn.amplitude.com/script/6707bf893e634019c43630ade4f466f1.engagement.js"></script>
-<script>amplitude.add(window.engagement.plugin())</script>
 <script src="https://cdn.amplitude.com/script/6707bf893e634019c43630ade4f466f1.js"></script>
-<script src="https://cdn.amplitude.com/script/6707bf893e634019c43630ade4f466f1.engagement.js"></script>
-
+<script>
+  window.amplitude.init("6707bf893e634019c43630ade4f466f1", {
+    defaultTracking: true,
+    autocapture: true,
+    fetchRemoteConfig: true,
+  });
+  // Enable Session Replay with custom sample rate
+  window.amplitude.add(window.sessionReplay.plugin({ sampleRate: 1 }));
+</script>
 
 <!doctype html>
 <html lang="en">
