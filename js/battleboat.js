@@ -3,7 +3,7 @@ amplitude.add(engagementPlugin());
 
 import { initAll } from "@amplitude/unified";
 
-initAll("YOUR_API_KEY", {
+initAll("6707bf893e634019c43630ade4f466f1", {
   // Other Amplitude SDK options...
   engagement: {
     // Guides and Surveys options go here...
